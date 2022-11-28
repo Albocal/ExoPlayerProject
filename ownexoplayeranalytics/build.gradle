@@ -1,7 +1,6 @@
 plugins {
-    id 'com.android.application'
+    id 'com.android.library'
     id 'org.jetbrains.kotlin.android'
-    id 'kotlin-kapt'
 }
 
 def config = rootProject.ext.configuration
@@ -12,12 +11,12 @@ def libraries = rootProject.ext.libraries
 def testLibraries = rootProject.ext.testLibraries
 def androidTestLibraries = rootProject.ext.androidTestLibraries
 
+def API_BASE_URL = "API_BASE_URL"
 android {
-    namespace rootProject.ext.namespace
+    namespace rootProject.ext.analyticsFrameworkId
     compileSdk config.compileSdk
 
     defaultConfig {
-        applicationId config.applicationId
         minSdk config.minSdk
         targetSdk config.targetSdk
         versionCode buildTimestamp()
@@ -28,9 +27,11 @@ android {
     buildTypes {
         release {
             minifyEnabled false
+            buildConfigField "String", API_BASE_URL, project.property('API_BASE_URL_DEV')
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
         debug {
+            buildConfigField "String", API_BASE_URL, project.property('API_BASE_URL_DEV')
         }
     }
     compileOptions {
@@ -40,9 +41,6 @@ android {
     kotlinOptions {
         jvmTarget = options.jvmTarget
     }
-    buildFeatures {
-        viewBinding build.viewBinding
-    }
 }
 
 dependencies {
@@ -50,29 +48,18 @@ dependencies {
     /* Android */
     implementation "androidx.core:core-ktx:${libraries.coreKTX}"
     implementation "androidx.appcompat:appcompat:${libraries.appcompat}"
-    implementation "com.google.android.material:material:${libraries.material}"
-    implementation "androidx.constraintlayout:constraintlayout:${libraries.constraintLy}"
 
     /** COROUTINES **/
     implementation "org.jetbrains.kotlinx:kotlinx-coroutines-core:${libraries.coroutines}"
     implementation "org.jetbrains.kotlinx:kotlinx-coroutines-android:${libraries.coroutines}"
-    implementation "androidx.navigation:navigation-fragment-ktx:${libraries.navFragKTX}"
-    implementation "androidx.navigation:navigation-ui-ktx:${libraries.navUIKTX}"
 
     /** EXOPLAYER **/
     implementation "com.google.android.exoplayer:exoplayer:${libraries.exoplayer}"
-
-    /** GLIDE **/
-    implementation "com.github.bumptech.glide:glide:${libraries.glide}"
-    implementation project(path: ':ownexoplayeranalytics')
-    annotationProcessor "com.github.bumptech.glide:compiler:${libraries.glide}"
 
     /* DAGGER */
     implementation "com.google.dagger:dagger:${libraries.dagger}"
     implementation "com.google.dagger:dagger-android:${libraries.dagger}"
     implementation "com.google.dagger:dagger-android-support:${libraries.dagger}"
-    kapt "com.google.dagger:dagger-compiler:${libraries.dagger}"
-    kapt "com.google.dagger:dagger-android-processor:${libraries.dagger}"
 
     /** RETROFIT **/
     implementation "com.squareup.retrofit2:retrofit:${libraries.retrofit2}"
@@ -80,10 +67,6 @@ dependencies {
     implementation "com.squareup.okhttp3:okhttp:${libraries.okhttp3}"
     implementation "com.squareup.okhttp3:logging-interceptor:${libraries.okhttp3}"
     testImplementation "com.squareup.okhttp3:mockwebserver:${libraries.okhttp3}"
-
-    /** ROOM **/
-    implementation "androidx.room:room-ktx:${libraries.room}"
-    kapt "androidx.room:room-compiler:${libraries.room}"
 
     /** Test Libraries **/
     testImplementation "junit:junit:${testLibraries.junit}"
@@ -101,5 +84,4 @@ dependencies {
     androidTestImplementation "androidx.arch.core:core-testing:${androidTestLibraries.archCore}"
     androidTestImplementation "com.google.truth:truth:${androidTestLibraries.truth}"
     androidTestImplementation "app.cash.turbine:turbine:${androidTestLibraries.turbine}"
-
 }
