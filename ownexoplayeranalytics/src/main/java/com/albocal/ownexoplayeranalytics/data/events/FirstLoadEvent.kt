@@ -11,14 +11,8 @@ import kotlinx.coroutines.launch
 class FirstLoadEvent(private val analyticsRepository: IAnalyticsRepository, private val scope: CoroutineScope) :
     IOnAnalyticsEventSuccess {
     override val eventId: Int = EVENT_LOAD_STARTED
-    /** **/
-    private var wasEmitted = false
 
     override fun onSuccess(eventTime: AnalyticsListener.EventTime) {
-        if(wasEmitted)
-            return
-
-        wasEmitted = true
         scope.launch{
             analyticsRepository.onLoadStarts(eventTime.realtimeMs)
         }

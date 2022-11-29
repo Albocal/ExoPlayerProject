@@ -1,7 +1,6 @@
 package com.albocal.exoplayerapp.ui
 
 import android.os.Bundle
-import android.util.Log
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import com.albocal.exoplayerapp.base.BaseActivity
@@ -10,7 +9,6 @@ import com.albocal.exoplayerapp.ext.getViewModel
 import com.albocal.ownexoplayeranalytics.AnalyticsApplication
 import com.google.android.exoplayer2.ExoPlayer
 import com.google.android.exoplayer2.MediaItem
-import com.google.android.exoplayer2.Player
 import javax.inject.Inject
 
 

@@ -1,5 +1,6 @@
 package com.albocal.ownexoplayeranalytics.data.repository
 
+import androidx.annotation.VisibleForTesting
 import com.albocal.ownexoplayeranalytics.data.remote.entity.EventStampRequest
 import com.albocal.ownexoplayeranalytics.data.remote.entity.NO_TIMESTAMP
 import com.albocal.ownexoplayeranalytics.data.remote.service.AnalyticsService
@@ -23,9 +24,11 @@ class AnalyticsRepositoryImpl(
     private val _resumeTimes = MutableStateFlow(EventCountModel(0,0L))
     override val resumeStateFlow: StateFlow<EventCountModel> = _resumeTimes
 
-    private var firstLoadWasEmitted = false
+    @VisibleForTesting(otherwise = VisibleForTesting.PRIVATE)
+    var firstLoadWasEmitted = false
 
-    private var firstRenderDuringVideoWasEmitted = false
+    @VisibleForTesting(otherwise = VisibleForTesting.PRIVATE)
+    var firstRenderDuringVideoWasEmitted = false
 
     override suspend fun onPauseResume(timestamp: Long) {
         pauseResumeCount++

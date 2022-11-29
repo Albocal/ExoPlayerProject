@@ -5,7 +5,7 @@ ext {
     configuration = [
             applicationId               : "com.albocal.exoplayerapp",
             minSdk                      : 21,
-            targetSdk                   : 33,
+            targetSdk                   : 32,
             compileSdk                  : 33,
             version_versionMajor        : "1",
             version_versionMinor        : "0",
@@ -50,7 +50,8 @@ ext {
             truth                    : "1.1.3",
             turbine                  : "0.12.0",
             coroutines               : "1.6.4",
-            mockito                  : "4.3.1"
+            mockito                  : "4.3.1",
+            robolectric              : "4.8",
 
     ]
 

@@ -24,6 +24,12 @@ android {
         testInstrumentationRunner config.testInstrumentationRunner
     }
 
+    testOptions {
+        unitTests {
+            includeAndroidResources = true
+        }
+    }
+
     buildTypes {
         release {
             minifyEnabled false
@@ -77,6 +83,7 @@ dependencies {
     testImplementation "app.cash.turbine:turbine:${testLibraries.turbine}"
     testImplementation "org.mockito:mockito-core:${testLibraries.mockito}"
     testImplementation "org.mockito:mockito-inline:${testLibraries.mockito}"
+    testImplementation "org.robolectric:robolectric:${testLibraries.robolectric}"
 
     /** Android Test Libraries **/
     androidTestImplementation "androidx.test.ext:junit:${androidTestLibraries.junit}"

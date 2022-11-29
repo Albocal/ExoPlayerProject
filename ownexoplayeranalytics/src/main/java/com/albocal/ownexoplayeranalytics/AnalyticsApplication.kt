@@ -1,6 +1,5 @@
 package com.albocal.ownexoplayeranalytics
 
-import android.content.Context
 import com.albocal.ownexoplayeranalytics.data.listeners.AnalyticsListener
 import com.albocal.ownexoplayeranalytics.data.listeners.PlayerListener
 import com.albocal.ownexoplayeranalytics.data.events.*
@@ -14,7 +13,7 @@ import retrofit2.Retrofit
 import retrofit2.converter.moshi.MoshiConverterFactory
 import kotlin.coroutines.CoroutineContext
 
-class AnalyticsApplication(private val context: Context, private val coroutineContext: CoroutineContext) {
+class AnalyticsApplication(private val coroutineContext: CoroutineContext) {
 
     /** Injections **/
     private val service : AnalyticsService  = Retrofit.Builder()
@@ -33,14 +32,14 @@ class AnalyticsApplication(private val context: Context, private val coroutineCo
 
     /** Listeners **/
 
-    val analyticsListener = AnalyticsListener(this,
+    val analyticsListener = AnalyticsListener(
         listOf(
             FirstLoadEvent(repository, coroutineScope),
             FirstFrameEvent(repository, coroutineScope),
             PauseResumeEvent(repository, coroutineScope))
         )
 
-    val playerListener = PlayerListener(this,
+    val playerListener = PlayerListener(
         listOf(
             EndEvent(repository, coroutineScope)
         ))

@@ -34,7 +34,7 @@ class AppModule(val app: ExoPlayerApp) {
 
     @Provides
     @Singleton
-    fun providesLibrary(context: Context): AnalyticsApplication {
-        return AnalyticsApplication(context, Dispatchers.Default)
+    fun providesLibrary(): AnalyticsApplication {
+        return AnalyticsApplication(Dispatchers.Default)
     }
 }
