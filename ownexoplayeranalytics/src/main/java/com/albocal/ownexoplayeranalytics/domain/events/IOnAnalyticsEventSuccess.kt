@@ -1,8 +1,8 @@
-package com.albocal.ownexoplayeranalytics.domain
+package com.albocal.ownexoplayeranalytics.domain.events
 
 import com.google.android.exoplayer2.analytics.AnalyticsListener
 
-interface IOnEventSuccess {
+interface IOnAnalyticsEventSuccess: IOnEventSuccess {
     val eventId: Int
 
     fun onSuccess(eventTime: AnalyticsListener.EventTime)

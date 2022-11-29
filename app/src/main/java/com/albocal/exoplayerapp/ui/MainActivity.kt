@@ -19,15 +19,18 @@ class MainActivity : BaseActivity() {
     companion object {
         const val TAG = "MainActivity"
     }
+
     private lateinit var binding: ActivityMainBinding
 
     @Inject
     lateinit var viewModelFactory: ViewModelProvider.Factory
 
     @Inject
-    lateinit var analitics : AnalyticsApplication
+    lateinit var analytics : AnalyticsApplication
 
     private lateinit var mainViewModel: MainViewModel
+
+    private lateinit var player : ExoPlayer
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -35,10 +38,12 @@ class MainActivity : BaseActivity() {
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
+        initPlayer()
         initViewModel()
         initUI()
         initListeners()
         initObservers()
+
     }
 
     private fun initViewModel(){
@@ -46,33 +51,40 @@ class MainActivity : BaseActivity() {
     }
 
     private fun initUI(){
-        val player = ExoPlayer.Builder(this).build()
-        player.repeatMode = Player.REPEAT_MODE_ALL;
-
         binding.playerView.player = player
+    }
+
+    private fun initPlayer(){
+        player = ExoPlayer.Builder(this).build()
 
         val mediaItem: MediaItem =
             MediaItem.fromUri("http://qthttp.apple.com.edgesuite.net/1010qwoeiuryfg/sl.m3u8")
+
         player.addMediaItem(mediaItem)
         player.prepare()
         player.playWhenReady = true
-        player.addAnalyticsListener(analitics.listener)
-    }
+        player.addAnalyticsListener(analytics.analyticsListener)
+        player.addListener(analytics.playerListener)
 
+    }
     private fun initListeners(){
 
     }
 
-
     private fun initObservers(){
         lifecycleScope.launchWhenStarted {
-            mainViewModel.resumeState.collect {
-                Log.d(TAG,"New collect resume: $it")
+            mainViewModel.pauseTextFlow.collect {
+                binding.activityMainPause.text = it
             }
         }
         lifecycleScope.launchWhenStarted {
-            mainViewModel.pauseState.collect {
-                Log.d(TAG,"New collect pause: $it")
+            mainViewModel.resumeTextFlow.collect {
+                binding.activityMainResume.text = it
+            }
+        }
+        lifecycleScope.launchWhenStarted {
+            mainViewModel.elapsedTextFlow.collect {
+                binding.activityMainElapsedTime.text = it
             }
         }
     }

@@ -1,14 +1,17 @@
 package com.albocal.ownexoplayeranalytics.data.events
 
-import com.albocal.ownexoplayeranalytics.domain.IOnEventSuccess
+import com.albocal.ownexoplayeranalytics.domain.events.IOnAnalyticsEventSuccess
 import com.albocal.ownexoplayeranalytics.domain.repository.IAnalyticsRepository
 import com.google.android.exoplayer2.analytics.AnalyticsListener
 import com.google.android.exoplayer2.analytics.AnalyticsListener.EVENT_LOAD_COMPLETED
+import com.google.android.exoplayer2.analytics.AnalyticsListener.EVENT_LOAD_STARTED
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
 
-class FirstLoadEvent(private val analyticsRepository: IAnalyticsRepository, private val scope: CoroutineScope) : IOnEventSuccess {
-    override val eventId: Int = EVENT_LOAD_COMPLETED
+class FirstLoadEvent(private val analyticsRepository: IAnalyticsRepository, private val scope: CoroutineScope) :
+    IOnAnalyticsEventSuccess {
+    override val eventId: Int = EVENT_LOAD_STARTED
+    /** **/
     private var wasEmitted = false
 
     override fun onSuccess(eventTime: AnalyticsListener.EventTime) {
@@ -17,7 +20,7 @@ class FirstLoadEvent(private val analyticsRepository: IAnalyticsRepository, priv
 
         wasEmitted = true
         scope.launch{
-            analyticsRepository.onFirstLoad(eventTime.realtimeMs)
+            analyticsRepository.onLoadStarts(eventTime.realtimeMs)
         }
     }
 }
